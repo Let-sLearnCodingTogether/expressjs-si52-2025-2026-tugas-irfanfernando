@@ -1,5 +1,6 @@
 import UserModel from "../models/userModel.js";
 import {hash, compare} from "../utils/hashUtil.js";
+import jwt from "jsonwebtoken";
 
 //registrasi
 export const register = async (req, res) => {
@@ -68,6 +69,11 @@ export const login = async (req,res) =>{
                 data : null
             })
         }
+
+        const token = jwt.sign(
+            {id : user._id, email: user.email},
+            JWT_SECRET, {expiresIn : "1h"}
+        )
 
         res.status(200).json({
             message:"Login berhasil",
